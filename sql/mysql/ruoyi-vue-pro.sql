@@ -5225,4 +5225,64 @@ INSERT INTO `yudao_demo03_student` (`id`, `name`, `sex`, `birthday`, `descriptio
 INSERT INTO `yudao_demo03_student` (`id`, `name`, `sex`, `birthday`, `description`, `creator`, `create_time`, `updater`, `update_time`, `deleted`, `tenant_id`) VALUES (9, '小花', 1, '2023-11-07 00:00:00', '<p>哈哈哈</p>', '1', '2023-11-17 00:04:47', '1', '2026-06-27 08:42:44', b'0', 1);
 COMMIT;
 
+-- 管理系统精简菜单：保留系统管理、通知审计和基础配置的必要入口。
+-- 业务扩展菜单不会进入初始化后的菜单树，也不会进入管理员角色权限。
+UPDATE `system_menu` SET `parent_id` = 1, `sort` = 7 WHERE `id` = 107;
+DROP TEMPORARY TABLE IF EXISTS `management_system_keep_menu`;
+CREATE TEMPORARY TABLE `management_system_keep_menu` (`id` bigint PRIMARY KEY);
+INSERT IGNORE INTO `management_system_keep_menu` (`id`) VALUES
+  (100), (101), (102), (103), (104), (105), (107), (108),
+  (106), (110), (115), (1243);
+INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+  SELECT `id` FROM `system_menu`
+  WHERE `parent_id` IN (SELECT `id` FROM `management_system_keep_menu`);
+INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+  SELECT `id` FROM `system_menu`
+  WHERE `parent_id` IN (SELECT `id` FROM `management_system_keep_menu`);
+INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+  SELECT `id` FROM `system_menu`
+  WHERE `parent_id` IN (SELECT `id` FROM `management_system_keep_menu`);
+INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+  SELECT `id` FROM `system_menu`
+  WHERE `parent_id` IN (SELECT `id` FROM `management_system_keep_menu`);
+INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+  SELECT `id` FROM `system_menu`
+  WHERE `parent_id` IN (SELECT `id` FROM `management_system_keep_menu`);
+DELETE `role_menu` FROM `system_role_menu` AS `role_menu`
+  WHERE `role_menu`.`menu_id` NOT IN (1, 2)
+    AND `role_menu`.`menu_id` NOT IN (SELECT `id` FROM `management_system_keep_menu`);
+DELETE FROM `system_menu`
+  WHERE `id` NOT IN (1, 2)
+    AND `id` NOT IN (SELECT `id` FROM `management_system_keep_menu`);
+DROP TEMPORARY TABLE `management_system_keep_menu`;
+
+-- 清理默认数据中的原项目品牌、测试账号和外部演示地址。
+UPDATE `system_dept` SET `name` = '默认部门' WHERE `id` = 100;
+UPDATE `system_notice` SET `title` = '系统通知', `content` = '<p>欢迎使用管理系统</p>' WHERE `id` = 1;
+UPDATE `system_oauth2_client`
+  SET `name` = '管理系统客户端', `logo` = '', `description` = '管理系统登录客户端', `redirect_uris` = '[]'
+  WHERE `id` = 1;
+UPDATE `system_tenant`
+  SET `name` = '默认租户', `contact_name` = '系统管理员', `websites` = 'localhost:80'
+  WHERE `id` = 1;
+UPDATE `system_users`
+  SET `nickname` = '系统管理员', `email` = 'admin@example.com', `avatar` = NULL
+  WHERE `id` = 1;
+UPDATE `system_users`
+  SET `username` = 'operator', `nickname` = '操作员', `email` = 'operator@example.com', `avatar` = NULL
+  WHERE `username` = 'yudao';
+UPDATE `system_users`
+  SET `username` = 'staff', `nickname` = '普通用户', `email` = 'staff@example.com', `avatar` = NULL
+  WHERE `username` = 'yuanma';
+UPDATE `system_users`
+  SET `nickname` = '测试用户', `email` = 'test@example.com', `avatar` = NULL
+  WHERE `username` IN ('aoteman', 'aotemane');
+UPDATE `system_users`
+  SET `nickname` = CONCAT('管理员', `id`), `email` = CONCAT('admin', `id`, '@example.com'), `avatar` = NULL
+  WHERE `nickname` IN ('芋道', '芋艿', '源码');
+UPDATE `system_tenant`
+  SET `name` = CONCAT('租户', `id`), `contact_name` = '系统管理员', `websites` = ''
+  WHERE `id` <> 1;
+DELETE FROM `infra_file_config` WHERE `id` IN (22, 34);
+
 SET FOREIGN_KEY_CHECKS = 1;

@@ -4,36 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.iocoder.boot</groupId>
-    <artifactId>yudao</artifactId>
+    <artifactId>management-system</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
     <modules>
         <module>yudao-dependencies</module>
         <module>yudao-framework</module>
-        <!-- Server 主项目 -->
         <module>yudao-server</module>
-        <!-- 各种 module 拓展 -->
         <module>yudao-module-system</module>
         <module>yudao-module-infra</module>
-<!--        <module>yudao-module-member</module>-->
-<!--        <module>yudao-module-bpm</module>-->
-<!--        <module>yudao-module-report</module>-->
-<!--        <module>yudao-module-mp</module>-->
-<!--        <module>yudao-module-pay</module>-->
-<!--        <module>yudao-module-mall</module>-->
-<!--        <module>yudao-module-crm</module>-->
-<!--        <module>yudao-module-erp</module>-->
-<!--        <module>yudao-module-iot</module>-->
-<!--        <module>yudao-module-mes</module>-->
-<!--        <module>yudao-module-wms</module>-->
-<!--        <module>yudao-module-im</module>-->
-<!-- 请参考 https://doc.iocoder.cn/ai/build/ 文档，完成 AI 模块的启动！！！ -->
-<!--        <module>yudao-module-ai</module>-->
     </modules>
 
-    <name>${project.artifactId}</name>
-    <description>芋道项目基础脚手架</description>
-    <url>https://github.com/YunaiV/ruoyi-vue-pro</url>
+    <name>管理系统</name>
+    <description>管理系统后端基础工程</description>
 
     <properties>
         <revision>2026.06-jdk8-SNAPSHOT</revision>

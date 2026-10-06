@@ -47,18 +47,18 @@ spring:
       primary: master
       datasource:
         master:
-          url: jdbc:mysql://127.0.0.1:3306/ruoyi-vue-pro?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true # MySQL Connector/J 8.X 连接的示例
+          url: jdbc:mysql://127.0.0.1:3306/management_system?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true
           username: root
           password: 123456
         slave: # 模拟从库，可根据自己需要修改 # 模拟从库，可根据自己需要修改
           lazy: true # 开启懒加载，保证启动速度
-          url: jdbc:mysql://127.0.0.1:3306/ruoyi-vue-pro?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true # MySQL Connector/J 8.X 连接的示例
+          url: jdbc:mysql://127.0.0.1:3306/management_system?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true
           username: root
           password: 123456
 
   # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
   redis:
-    host: 400-infra.server.iocoder.cn # 地址
+    host: 127.0.0.1 # 地址
     port: 6379 # 端口
     database: 1 # 数据库索引
 #    password: 123456 # 密码，建议生产环境开启
@@ -166,27 +166,22 @@ wx: # 参见 https://github.com/Wechat-Group/WxJava/blob/develop/spring-boot-sta
       key-prefix: wa # Redis Key 的前缀
       http-client-type: HttpComponents # 采用 HttpComponents（HttpClient 5）请求微信小程序平台
 
---- #################### 芋道相关配置 ####################
+--- #################### 管理系统配置 ####################
 
-# 芋道配置项，设置当前项目所有自定义的配置
 yudao:
-  pay:
-    order-notify-url: http://yunai.natapp1.cc/admin-api/pay/notify/order # 支付渠道的【支付】回调地址
-    refund-notify-url: http://yunai.natapp1.cc/admin-api/pay/notify/refund # 支付渠道的【退款】回调地址
-    transfer-notify-url: https://yunai.natapp1.cc/admin-api/pay/notify/transfer # 支付渠道的【转账】回调地址
   demo: false # 开启演示模式
   tencent-lbs-key: TVDBZ-TDILD-4ON4B-PFDZA-RNLKH-VVF6E # QQ 地图的密钥 https://lbs.qq.com/service/staticV2/staticGuide/staticDoc
 
 justauth:
-  enabled: true
+  enabled: false
   type:
     DINGTALK: # 钉钉
-      client-id: dingvrnreaje3yqvzhxg
-      client-secret: i8E6iZyDvZj51JIb0tYsYfVQYOks9Cq1lgryEjFRqC79P3iJcrxEwT6Qk2QvLrLI
+      client-id: ''
+      client-secret: ''
       ignore-check-redirect-uri: true
     WECHAT_ENTERPRISE: # 企业微信
-      client-id: wwd411c69a39ad2e54
-      client-secret: 1wTb7hYxnpT2TUbIeHGXGo7T0odav1ic10mLdyyATOw
+      client-id: ''
+      client-secret: ''
       agent-id: 1000004
       ignore-check-redirect-uri: true
     # noinspection SpringBootApplicationYaml

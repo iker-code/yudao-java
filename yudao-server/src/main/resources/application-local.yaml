@@ -38,7 +38,7 @@ spring:
         max-wait: 60000 # 配置获取连接等待超时的时间，单位：毫秒（1 分钟）
         time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒（1 分钟）
         min-evictable-idle-time-millis: 600000 # 配置一个连接在池中最小生存的时间，单位：毫秒（10 分钟）
-        max-evictable-idle-time-millis: 1800000 # 配置一个连接在池中最大生存的时间，单位：毫秒（30 分钟）
+        max-evictable-idle-time-millis: 1800000 # 配置一个连接在池中最大生存的时间，单位：毫秒（30 分 钟）
         validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效
         test-while-idle: true
         test-on-borrow: false
@@ -48,45 +48,39 @@ spring:
       primary: master
       datasource:
         master:
-          url: jdbc:mysql://127.0.0.1:3306/ruoyi-vue-pro-jdk8?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true # MySQL Connector/J 8.X 连接的示例
-          #          url: jdbc:mysql://127.0.0.1:3306/ruoyi-vue-pro?useSSL=true&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true # MySQL Connector/J 5.X 连接的示例
-          #          url: jdbc:postgresql://127.0.0.1:5432/ruoyi-vue-pro # PostgreSQL 连接的示例
+          url: jdbc:mysql://127.0.0.1:3306/management_system?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true
           #          url: jdbc:oracle:thin:@127.0.0.1:1521:xe # Oracle 连接的示例
-          #          url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=ruoyi-vue-pro;SelectMethod=cursor;encrypt=false;rewriteBatchedStatements=true;useUnicode=true;characterEncoding=utf-8 # SQLServer 连接的示例
-          #          url: jdbc:dm://127.0.0.1:5236?schema=RUOYI_VUE_PRO # DM 连接的示例
           #          url: jdbc:kingbase8://127.0.0.1:54321/test  # 人大金仓 KingbaseES 连接的示例
           #          url: jdbc:postgresql://127.0.0.1:5432/postgres # OpenGauss 连接的示例
-          #          url: jdbc:postgresql://127.0.0.1:5866/ruoyi-vue-pro # 瀚高 HighGo 连接的示例
-          username: root
+          username: admin
           password: 123456
           #          username: sa # SQL Server 连接的示例
-          #          password: Yudao@2024 # SQL Server 连接的示例
+          #          password: change-me # SQL Server 连接的示例
           #          username: SYSDBA # DM 连接的示例
           #          password: SYSDBA001 # DM 连接的示例
           #          username: root # OpenGauss 连接的示例
-          #          password: Yudao@2024 # OpenGauss 连接的示例
+          #          password: change-me # OpenGauss 连接的示例
           #          username: root # 瀚高 HighGo 连接的示例
           #          password: 123456 # 瀚高 HighGo 连接的示例
         slave: # 模拟从库，可根据自己需要修改
           lazy: true # 开启懒加载，保证启动速度
-          url: jdbc:mysql://127.0.0.1:3306/ruoyi-vue-pro-jdk8?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&nullCatalogMeansCurrent=true
+          url: jdbc:mysql://127.0.0.1:3306/management_system?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&nullCatalogMeansCurrent=true
           username: root
           password: 123456
-#        tdengine: # IoT 数据库（需要 IoT 物联网再开启噢！）
-#          lazy: true # 开启懒加载，保证启动速度
-#          url: jdbc:TAOS-WS://127.0.0.1:6041/ruoyi_vue_pro?varcharAsString=true&enableAutoReconnect=true # 参见：https://t.zsxq.com/qaX9c，开启 TDengine WebSocket 自动重连
-#          driver-class-name: com.taosdata.jdbc.ws.WebSocketDriver
-#          username: root
-#          password: taosdata
-#          druid:
-#            validation-query: SELECT SERVER_STATUS() # TDengine 数据源的有效性检查 SQL
 
   # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
   redis:
     host: 127.0.0.1 # 地址
     port: 6379 # 端口
     database: 0 # 数据库索引
-#    password: dev # 密码，建议生产环境开启
+    password: 123456 # 密码，建议生产环境开启
+
+#minio配置
+#minio:
+#  endpoint: http://j32277ld.natappfree.cc:9000
+#  accessKey: 8cKWZjWTMB3FXVzsTGHT
+#  secretKey: D7nhcNJLmb4fSWsLi2wWwwemSAuTSCMw83yDL3aQ
+#  bucket: management-system
 
 --- #################### 定时任务相关配置 ####################
 
@@ -123,7 +117,7 @@ spring:
 
 # rocketmq 配置项，对应 RocketMQProperties 配置类
 rocketmq:
-  name-server: 127.0.0.1:9876 # RocketMQ Namesrv
+    name-server: 127.0.0.1:9876 # RocketMQ Namesrv
 
 spring:
   # RabbitMQ 配置项，对应 RabbitProperties 配置类
@@ -175,30 +169,13 @@ logging:
     name: ${user.home}/logs/${spring.application.name}.log # 日志文件名，全路径
   level:
     # 配置自己写的 MyBatis Mapper 打印日志
-    cn.iocoder.yudao.module.bpm.dal.mysql: debug
     cn.iocoder.yudao.module.infra.dal.mysql: debug
     cn.iocoder.yudao.module.infra.dal.mysql.logger.ApiErrorLogMapper: INFO # 配置 ApiErrorLogMapper 的日志级别为 info，避免和 GlobalExceptionHandler 重复打印
     cn.iocoder.yudao.module.infra.dal.mysql.job.JobLogMapper: INFO # 配置 JobLogMapper 的日志级别为 info
     cn.iocoder.yudao.module.infra.dal.mysql.file.FileConfigMapper: INFO # 配置 FileConfigMapper 的日志级别为 info
-    cn.iocoder.yudao.module.pay.dal.mysql: debug
-    cn.iocoder.yudao.module.pay.dal.mysql.notify.PayNotifyTaskMapper: INFO # 配置 PayNotifyTaskMapper 的日志级别为 info
     cn.iocoder.yudao.module.system.dal.mysql: debug
     cn.iocoder.yudao.module.system.dal.mysql.sms.SmsChannelMapper: INFO # 配置 SmsChannelMapper 的日志级别为 info
-    cn.iocoder.yudao.module.tool.dal.mysql: debug
-    cn.iocoder.yudao.module.member.dal.mysql: debug
-    cn.iocoder.yudao.module.trade.dal.mysql: debug
-    cn.iocoder.yudao.module.promotion.dal.mysql: debug
-    cn.iocoder.yudao.module.statistics.dal.mysql: debug
-    cn.iocoder.yudao.module.crm.dal.mysql: debug
-    cn.iocoder.yudao.module.erp.dal.mysql: debug
-    cn.iocoder.yudao.module.mes.dal.mysql: debug
-    cn.iocoder.yudao.module.wms.dal.mysql: debug
-    cn.iocoder.yudao.module.iot.dal.mysql: debug
-    cn.iocoder.yudao.module.iot.dal.tdengine: DEBUG
-    cn.iocoder.yudao.module.iot.service.rule: debug
-    cn.iocoder.yudao.module.ai.dal.mysql: debug
-    cn.iocoder.yudao.module.im.dal.mysql: debug
-    org.springframework.context.support.PostProcessorRegistrationDelegate: ERROR # TODO 芋艿：先禁用，Spring Boot 3.X 存在部分错误的 WARN 提示
+    org.springframework.context.support.PostProcessorRegistrationDelegate: ERROR
 
 debug: false
 
@@ -230,18 +207,9 @@ wx:
       key-prefix: wa # Redis Key 的前缀
       http-client-type: HttpComponents # 采用 HttpComponents（HttpClient 5）请求微信小程序平台
 
---- #################### 芋道相关配置 ####################
+--- #################### 管理系统配置 ####################
 
-# 芋道配置项，设置当前项目所有自定义的配置
 yudao:
-  captcha:
-    enable: false # 本地环境，暂时关闭图片验证码，方便登录等接口的测试；
-  security:
-    mock-enable: true
-  pay:
-    order-notify-url: https://yutou.mynatapp.cc/admin-api/pay/notify/order # 支付渠道的【支付】回调地址
-    refund-notify-url: https://yutou.mynatapp.cc/admin-api/pay/notify/refund # 支付渠道的【退款】回调地址
-    transfer-notify-url: https://yutou.mynatapp.cc/admin-api/pay/notify/transfer # 支付渠道的【转账】回调地址
   access-log: # 访问日志的配置项
     enable: false
   demo: false # 关闭演示模式
@@ -252,15 +220,15 @@ yudao:
   tencent-lbs-key: TVDBZ-TDILD-4ON4B-PFDZA-RNLKH-VVF6E # QQ 地图的密钥 https://lbs.qq.com/service/staticV2/staticGuide/staticDoc
 
 justauth:
-  enabled: true
+  enabled: false
   type:
     DINGTALK: # 钉钉
-      client-id: dingvrnreaje3yqvzhxg
-      client-secret: i8E6iZyDvZj51JIb0tYsYfVQYOks9Cq1lgryEjFRqC79P3iJcrxEwT6Qk2QvLrLI
+      client-id: ''
+      client-secret: ''
       ignore-check-redirect-uri: true
     WECHAT_ENTERPRISE: # 企业微信
-      client-id: wwd411c69a39ad2e54
-      client-secret: 1wTb7hYxnpT2TUbIeHGXGo7T0odav1ic10mLdyyATOw
+      client-id: ''
+      client-secret: ''
       agent-id: 1000004
       ignore-check-redirect-uri: true
     # noinspection SpringBootApplicationYaml
