@@ -5229,25 +5229,46 @@ COMMIT;
 -- 业务扩展菜单不会进入初始化后的菜单树，也不会进入管理员角色权限。
 UPDATE `system_menu` SET `parent_id` = 1, `sort` = 7 WHERE `id` = 107;
 DROP TEMPORARY TABLE IF EXISTS `management_system_keep_menu`;
+DROP TEMPORARY TABLE IF EXISTS `management_system_keep_menu_level`;
 CREATE TEMPORARY TABLE `management_system_keep_menu` (`id` bigint PRIMARY KEY);
+CREATE TEMPORARY TABLE `management_system_keep_menu_level` (`id` bigint PRIMARY KEY);
 INSERT IGNORE INTO `management_system_keep_menu` (`id`) VALUES
   (100), (101), (102), (103), (104), (105), (107), (108),
   (106), (110), (115), (1243);
-INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+DELETE FROM `management_system_keep_menu_level`;
+INSERT IGNORE INTO `management_system_keep_menu_level` (`id`)
   SELECT `id` FROM `system_menu`
   WHERE `parent_id` IN (SELECT `id` FROM `management_system_keep_menu`);
 INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+  SELECT `id` FROM `management_system_keep_menu_level`;
+
+DELETE FROM `management_system_keep_menu_level`;
+INSERT IGNORE INTO `management_system_keep_menu_level` (`id`)
   SELECT `id` FROM `system_menu`
   WHERE `parent_id` IN (SELECT `id` FROM `management_system_keep_menu`);
 INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+  SELECT `id` FROM `management_system_keep_menu_level`;
+
+DELETE FROM `management_system_keep_menu_level`;
+INSERT IGNORE INTO `management_system_keep_menu_level` (`id`)
   SELECT `id` FROM `system_menu`
   WHERE `parent_id` IN (SELECT `id` FROM `management_system_keep_menu`);
 INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+  SELECT `id` FROM `management_system_keep_menu_level`;
+
+DELETE FROM `management_system_keep_menu_level`;
+INSERT IGNORE INTO `management_system_keep_menu_level` (`id`)
   SELECT `id` FROM `system_menu`
   WHERE `parent_id` IN (SELECT `id` FROM `management_system_keep_menu`);
 INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+  SELECT `id` FROM `management_system_keep_menu_level`;
+
+DELETE FROM `management_system_keep_menu_level`;
+INSERT IGNORE INTO `management_system_keep_menu_level` (`id`)
   SELECT `id` FROM `system_menu`
   WHERE `parent_id` IN (SELECT `id` FROM `management_system_keep_menu`);
+INSERT IGNORE INTO `management_system_keep_menu` (`id`)
+  SELECT `id` FROM `management_system_keep_menu_level`;
 DELETE `role_menu` FROM `system_role_menu` AS `role_menu`
   WHERE `role_menu`.`menu_id` NOT IN (1, 2)
     AND `role_menu`.`menu_id` NOT IN (SELECT `id` FROM `management_system_keep_menu`);
@@ -5255,6 +5276,7 @@ DELETE FROM `system_menu`
   WHERE `id` NOT IN (1, 2)
     AND `id` NOT IN (SELECT `id` FROM `management_system_keep_menu`);
 DROP TEMPORARY TABLE `management_system_keep_menu`;
+DROP TEMPORARY TABLE `management_system_keep_menu_level`;
 
 -- 清理默认数据中的原项目品牌、测试账号和外部演示地址。
 UPDATE `system_dept` SET `name` = '默认部门' WHERE `id` = 100;

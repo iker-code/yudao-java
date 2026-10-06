@@ -217,6 +217,8 @@ spring:
 --- #################### 管理系统配置 ####################
 
 yudao:
+  captcha:
+    enable: false # 管理系统关闭登录验证码
   info:
     version: 1.0.0
     base-package: cn.iocoder.yudao
